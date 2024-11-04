@@ -19,7 +19,7 @@ class Profile extends Model
         'gender',
     ];
 
-    public function user_id(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
