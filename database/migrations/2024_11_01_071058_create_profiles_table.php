@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->on('users');
+            $table->foreignIdFor(User::class);
             $table->string('name')->nullable();
             $table->string('fullname')->nullable();
             $table->string('phone', length: 10)->nullable();
