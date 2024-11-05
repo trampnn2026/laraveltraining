@@ -18,8 +18,8 @@ type Query {
 
 type User {
   id: ID!
-  email: String
-  profile: Profile @hasOne
+  email: String!
+  profile: Profile! @hasOne
 }
 
 type Profile {
@@ -32,34 +32,34 @@ type Profile {
 }
 
 type Mutation {
+  "Tạo mới User kèm Profile"
   createUser(input: CreateUserInput! @spread): User! @create
+  "Update User"
   updateUser(input: UpdateUserInput! @spread): User! @update
-  # deleteUser(id: ID!, deleteProfile: Boolean @delete(relation: "profile")): User! @update
+  "Xóa User và cả Profile"
+  deleteUser(id: ID @whereKey): User! @delete
+  "Update Profile"
+  updateProfile(input: UpdateProfileInput! @spread): Profile! @update
 }
 
 input CreateUserInput {
   email: String!
   password: String!
-  profile: UpdateProfileHasOne
+  profile: CreateProfileBelongsTo!
+}
+
+input CreateProfileBelongsTo {
+  connect: ID
+  "Chỉ diền trường name, hoặc bỏ trống -> NULL. Các trường khác NULL"
+  create: CreateProfileInput!
 }
 
 input UpdateUserInput {
-  id: ID!
-  email: String!
-  password: String
-  profile: UpdateProfileHasOne
+  id: ID!,
+  email: String
 }
-
-input UpdateProfileHasOne {
-  create: CreateProfileInput
-  update: UpdateProfileInput
-}
-
 input CreateProfileInput {
   name: String
-  fullname: String
-  phone: String
-  gender: Boolean
 }
 
 input UpdateProfileInput {
